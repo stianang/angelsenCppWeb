@@ -8,8 +8,8 @@ The method simply uses the following:
 
 ## Libraries
 The demonstration uses copies of the following libraries (to enable plug-and-play):
-https://gitlab.com/eidheim/Simple-Web-Server
-https://github.com/hughperkins/Jinja2CppLight
+* https://gitlab.com/eidheim/Simple-Web-Server
+* https://github.com/hughperkins/Jinja2CppLight
 
 And a a copy of standalone boost asio.
 
