@@ -1,0 +1,14 @@
+{
+    "rootDir" : "/home/stian/EasyWeb/AngelsenSoftwareSystems",
+    "templateDir" : "/home/stian/EasyWeb/AngelsenSoftwareSystems/website",
+    "port": 8080,
+    "https": false,
+    "crt" : "server.crt",
+    "key" : "server.key",
+    "email" : {
+        "url" : "api.sendinblue.com",
+        "apiKey" : "SECRET",
+        "toEmail" : "sangelsen@gmail.com",
+        "toName" : "Stian Angelsen"
+    }
+}

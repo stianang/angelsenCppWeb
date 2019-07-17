@@ -1,0 +1,625 @@
+     <!-- BLOG HEADER -->
+     <section id="blog-header" data-stellar-background-ratio="0.5">
+          <div class="overlay"></div>
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-offset-1 col-md-5 col-sm-12">
+                         <h2>What does it take to create a website using C++?</h2>
+                    </div>
+
+               </div>
+          </div>
+     </section>
+
+
+     <!-- BLOG DETAIL -->
+     <section id="blog-detail" data-stellar-background-ratio="0.5">
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-offset-1 col-md-10 col-sm-12">
+                         <!-- BLOG THUMB -->
+                         <div class="blog-detail-thumb">
+                              <div class="blog-image">
+                                   <pre><code align="left">
+#include &lt;ServerImplementation.h&gt;
+#include &lt;InputParser.h&gt;
+
+int main(int argc, char ** argv)
+{
+   InputParser parser(argc, argv);
+   std::string rootDir = parser.getCmdOption("-rootDir");
+
+   Angelsen::Config config;
+   config.updateFromJson(rootDir + "/config.json");
+   config.loadTemplate();
+
+   Angelsen::runServer(config);
+}
+                              </code></pre>
+                              </div>
+                              <h2>A basic C++ website - a complete example</h2>
+                              <p>Many C++ developers would like to stick with what they know to create a basic website, without spending time to learn the latest trending javascript framework. Let's take a look at what it takes!</p>
+
+                            <p>C++ is useful for at least the following types of websites:</p>
+
+                            <ul>
+                               <li>As a personal homepage and blog</li>
+                               <li>As a landing page for service/product</li>
+                               <li>Websites relying on C++ libraries, for example a data monitoring and control website</li>
+                            </ul>
+
+                            <p>C++ is not suitable if you want the latest in responsive design, which relies on javascript. However, please note that it is possible to get a very dynamic feel using CSS only.</p>
+
+                              <p>There are several approaches to creating a website in C++. For this blog post, I will focus on the method I think is the most plug and play. Some C++ web frameworks use widgets and other special classes, but this makes it hard to use predefined HTML/CSS templates (which are beatiful, and widely available on the web).</p>
+
+                             <h3>TL;DR</h3>
+                             <p>A minimal example:</p>
+
+<pre><code align="left">
+// Partly sudo-code, to demonstrate a minimal example
+
+int main(int argc, char ** argv)
+{
+    HttpServer server(8080);    // HTTP server
+
+    server.resource["^/home$"]["GET"] = [](ResponsePtr response, RequestPtr) {  // Define a path
+        std::string indexFile = readFile("path/to/web/index.html"); // Load HTML file
+
+        TemplateEngine indexPage(indexFile); // Use template engine to set variables
+        indexPage.setValue("title", "Welcome to website Hello World");
+        indexPage.setValue("contactEmail", "my@email.com");
+
+        response->write(indexPage.render); // Return rendered page
+    };
+
+    server.start();
+}
+</code></pre>
+
+
+                             <p>That's basically it (although not yet optimal)! For my website, I will split this up into convenient classes to add some additional features.</p>
+
+                             <h3>Required components</h3>
+                             <p>To create the website, we need some basic functionality:</p>
+                             <ul>
+                                <li><b>An HTTP server:</b> This allows us to receive HTTP requests and respond with data or the rendered webpage.</li>
+                                <li><b>An HTML template engine:</b> This allows us to insert custom variables into html pages</li>
+                                <li><b>Page controllers:</b> This allows us to apply logic to received request, interact with databases etc.</li>
+                             </ul>
+
+                            <p>There are many available HTTP servers and HTML template engines on github. Pick your favorite. For this example, I've selected libraries with minimal dependencies to simplify the demonstration:</p>
+
+                            <ul>
+                               <li><b>HTTP server:</b> <a href="https://gitlab.com/eidheim/Simple-Web-Server">https://gitlab.com/eidheim/Simple-Web-Server</a></li>
+                               <li><b>HTML template engine:</b> <a href="https://github.com/hughperkins/Jinja2CppLight">https://github.com/hughperkins/Jinja2CppLight</a></li>
+                               <li><b>Page controllers:</b> This is simple, so I just made some classes myself, adapted to the HTTP server API.</li>
+                            </ul>
+
+                            <p>The HTTP server receives the requests, the page controller handles logic and combines one or more html files into the final webpage to send back to the client</p>
+
+                            <div class="blog-image">
+                                 <img src="/blog/2019/images/1_blockDiagram.png" class="img-responsive" alt="Block diagram">
+                            </div>
+
+                            <h3>A consultant homepage</h3>
+                            <p>I will use this very website as an example, as it is running with a C++ backend</p>
+                            <p>My requirement for the site was to have a simple presentation of myself, a contact form, and blog functionality.</p>
+                            <p>First I scouted the web by googling 'html/css consultant template'. In the end I found this free template that met my requirements: <a href="https://templatemo.com/tm-509-hydro">https://templatemo.com/tm-509-hydro</a></p>
+                            <p>You may say using template is 'cheating', but it is the industry standard when delivering web pages to let the client choose a template/theme, which is then modified. There are so many templates out there, so no need to do this from scratch</p>
+                            <p>Once the template selected, I started designing my mini-framework.</p>
+
+                            <h3>Tree structure</h3>
+                            <p>I split my code into 'common' elements, to be reused with future websites, and the concrete implementation of the consultant page.</p>
+
+                            <ul style="list-style-type: none;">
+                                <li>- common</li>
+                                <li>
+                                    <ul style="list-style-type: none;">
+                                        <li>+ Jinja2CppLight <i>(Template engine)</i></li>
+                                        <li>+ http <i>(SimpleWebServer and some additional helpers)</i></li>
+                                        <li>+ easyweb <i>(utility classes)</i></li>
+                                    </ul>
+                                </li>
+                                <li>- ConsultantPage</li>
+                                <li>
+                                    <ul style="list-style-type: none;">
+                                        <li>+ src <i>(main, page controllers)</i></li>
+                                        <li>+ website <i>(template, html)</i></li>
+                                    </ul>
+                                </li>
+                             </ul>
+
+                            <p>Take a look at the github project to browse the structure.</p>
+
+                            <p>I had the following features in mind when combining the libraries:</p>
+                            <ul>
+                                <li>Easy to get started</li>
+                                <li>Easy to use</li>
+                                <li>Easy to scale</li>
+                                <li>Easy to develop. Reload html files when refreshing the page, so that html pages can be modified without re-compiling</li>
+                            </ul>
+                            <p><b>I did not focus on optimising. If your are a seasoned C++ developer please apply your optimizations were desired</b></p>
+
+                            <h3>WebFile class </h3>
+                            <p>For convenience, I created a simple class to load (and reload) html files when they are needed. I used the class as components in the page controllers</p>
+
+                            <p>The key feature of the class is simply accessing file content as string, and loading:</p>
+
+                            <pre><code align="left">
+std::string& WebFile::file()
+{
+    if (file_.empty())
+    {
+        read();
+    }
+    else if (reload_)
+    {
+        read();
+    }
+
+    return file_;
+}
+
+void WebFile::read()
+{
+    file_.clear();
+    std::ifstream file(filePath_);
+
+    if (file.is_open())
+    {
+      std::string line;
+
+      while ( getline (file, line) )
+      {
+          file_ += line;
+      }
+      file.close();
+    }
+    else
+    {
+        std::cerr << "Failed to open file: " << filePath_ << std::endl;
+    }
+}
+</code></pre>
+
+                            <h3>The basic html template</h3>
+                            <p>I modified the downloaded template so that the pages can have the same menu and footer, only replacing the body when loading different pages. Note that variables are inserted using {{variable}} tags.</p>
+
+<pre><code align="left">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    <!-- HEAD -->
+    ... Head content
+&lt;/head&gt;
+&lt;body&gt;
+
+     <!-- MENU -->
+     ... Menu HTML content
+
+     <!-- BODY -->
+     {{body}}
+
+     <!-- FOOTER -->
+     ... Footer HTML content
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+</pre></code>
+
+                            <h3>Configuration</h3>
+                            <p>It is convenient to load config from a separate file, e.g. a json file. In addition to configuration, I store the main html template in the config class, for easy access from the page controllers. My intention is then to mainly depend on the config class below.</p>
+
+<pre><code align="left">
+
+// Config.h
+
+#include &lt;json.hpp&gt;
+#include &lt;WebFile.h&gt;
+
+using nlohmann::json;
+
+namespace Angelsen
+{
+    struct Config
+    {
+        std::string rootDir{};
+        std::string templateDir{};
+
+        unsigned short port {8080};
+
+        bool https {false};
+        std::string crt{};
+        std::string key{};
+
+        struct SendInBlue
+        {
+            std::string url{};
+            std::string apiKey{};
+            std::string toEmail{};
+            std::string toName{};
+        } email;
+
+        std::unique_ptr&lt;EasyWeb::WebFile&gt; template_;
+
+        void updateFromJson(const std::string &configPath);
+        void loadTemplate();
+    };
+}
+
+// config.json
+
+{
+    "rootDir" : "/home/stian/EasyWeb/AngelsenSoftwareSystems",
+    "templateDir" : "/home/stian/EasyWeb/AngelsenSoftwareSystems/website",
+    "port": 8080,
+    "https": false,
+    "crt" : "server.crt",
+    "key" : "server.key",
+    "email" : {
+        "url" : "api.sendinblue.com",
+        "apiKey" : "mySecretApiKey",
+        "toEmail" : "sangelsen@gmail.com",
+        "toName" : "Stian Angelsen"
+    }
+}
+
+
+</code></pre>
+
+                            <h3>Index page controller</h3>
+                            <p>The most basic page is the index page. It is simply a static page placed inside the body of the template</p>
+                            <p>I chose to design the controllers as simply as possible. The task of the controllers is to take input and render the output.</p>
+
+<pre><code align="left">
+
+// ControllerIndex.h
+
+#include &lt;WebFile.h&gt;
+#include &lt;Config.h&gt;
+
+namespace Angelsen
+{
+    struct ControllerIndex
+    {
+        ControllerIndex(const Config& config);
+
+        std::string get();
+
+        const Config& config_;
+        EasyWeb::WebFile index_;
+    };
+}
+
+// index.cpp
+
+#include "ControllerIndex.h"
+#include &lt;Jinja2CppLight.h&gt;
+
+Angelsen::ControllerIndex::ControllerIndex(const Config &config)
+    : config_(config),
+      index_(config.templateDir + "/index.html", true)
+{
+
+}
+
+std::string Angelsen::ControllerIndex::get()
+{
+    Jinja2CppLight::Template t(config_.template_->file());
+    t.setValue("body", index_.file());
+
+    return t.render();
+}
+
+
+</code></pre>
+
+
+                               <h3>Contact confirmation controller</h3>
+                               <p>I will use the contact form to send myself an email when it is submitted. I use a third party email provider, which can send emails using a simple HTTP request. I will not go into the detail of the implementation, but you may look it up on the GitHub project if curious. The request requires me to send an http-version of the emails text as well as in plaintext format.</p>
+
+<pre><code align="left">
+
+// ControllerContact.h
+
+#include &lt;WebFile.h&gt;
+#include &lt;Config.h&gt;
+
+namespace Angelsen
+{
+    struct ControllerContact
+    {
+        ControllerContact(const Config& config);
+
+        struct FormData
+        {
+            std::string name{};
+            std::string email{};
+            std::string number{};
+            std::string subject{};
+            std::string message{};
+        };
+
+        std::string get(const FormData &formData);
+        bool sendEmail(const FormData& formData);
+
+        const Config& config_;
+        EasyWeb::WebFile confirmation_;
+    };
+}
+
+// ControllerContact.cpp
+
+#include "ControllerContact.h"
+#include &lt;Jinja2CppLight.h&gt;
+#include &lt;EmailClientSendInBlue.h&gt;
+#include &lt;sstream&gt;
+
+using namespace Angelsen;
+
+ControllerContact::ControllerContact(const Config &config)
+    : config_(config),
+      confirmation_(config.templateDir + "/contact_confirmation.html", true)
+{
+
+}
+
+std::string ControllerContact::get(const FormData &formData)
+{
+    Jinja2CppLight::Template confirmation(confirmation_.file());
+
+    if (sendEmail(formData))
+    {
+        confirmation.setValue("headerTitle", "Thank you for your request!");
+        confirmation.setValue("title", "Your request has been sent");
+        confirmation.setValue("result", "We will contact you as soon as possible. For urgent request, please contact us on (+47) 90 07 98 93 or on sangelsen@gmail.com" );
+    }
+    else
+    {
+        confirmation.setValue("headerTitle", "Something went wrong");
+        confirmation.setValue("title", "We were unable to process your request");
+        confirmation.setValue("result", "Please verify all fields were entered correctly. For urgent request, please contact us on (+47) 90 07 98 93  or on sangelsen@gmail.com");
+    }
+
+    Jinja2CppLight::Template mainTemplate(config_.template_->file());
+    mainTemplate.setValue("body", confirmation.render());
+
+    return mainTemplate.render();
+}
+
+
+bool ControllerContact::sendEmail(const FormData &formData)
+{
+    std::stringstream html;
+    html << "&lt;h3&gt;New message from your website!&lt;/h3&gt;\n"
+         << "&lt;p&gt;" << formData.message << "&lt;/p&gt;\n"
+         << "&lt;h3&gt;Info&lt;/h3&gt;\n"
+         << "&lt;p&gt;Name:    " << formData.name << "&lt;/p&gt;\n"
+         << "&lt;p&gt;Email:   " << formData.email << "&lt;/p&gt;\n"
+         << "&lt;p&gt;Number:  " << formData.number << "&lt;/p&gt;\n"
+         << "&lt;p&gt;Subject: " << formData.subject << "&lt;/p&gt;\n";
+
+    std::stringstream plain;
+    plain << "New message from your website!\n\n"
+          << formData.message << "\n\n"
+          << "Info\n"
+          << "Name:    " << formData.name << "\n"
+          << "Email:   " << formData.email << "\n"
+          << "Number:  " << formData.number << "\n"
+          << "Subject: " << formData.subject << "\n";
+
+    auto email = EmailClientSendInBlue(config_.email.url,
+                                       config_.email.apiKey)
+                    .to(config_.email.toEmail, config_.email.toName)
+                    .from(formData.email, formData.name)
+                    .subject(formData.subject)
+                    .content(html.str(), plain.str());
+
+    return email.send();
+}
+
+</code></pre>
+
+<p>The controller takes form input, try to send the email, and then output if the sending was successful or not. </p>
+
+
+                             <h3>Blog detail controller</h3>
+                             <p>The controller shall be responsible to show any blog post, by using a blog-id as input. There are many oppertunities to expand the controller, such as storing the blog posts in a database. For now, I'll keep it simple, and just upload a new html file for every new blog post. Then I would manually have to update the index page to feature the latest blog posts. Expansion of this system is a good candiate for the next blog post.</p>
+
+<pre><code align="left">
+
+// ControllerBlogPost.h
+
+#include &lt;WebFile.h&gt;
+#include &lt;Config.h&gt;
+
+namespace Angelsen
+{
+    struct ControllerBlogPost
+    {
+        ControllerBlogPost(const Config& config);
+
+        std::string get(const std::string &blogPath);
+
+        const Config& config_;
+    };
+}
+
+// ControllerBlogPost.cpp
+
+#include "ControllerBlogPost.h"
+#include &lt;Jinja2CppLight.h&gt;
+
+using namespace Angelsen;
+
+ControllerBlogPost::ControllerBlogPost(const Config &config)
+    : config_(config)
+{
+
+}
+
+std::string ControllerBlogPost::get(const std::string& blogPath)
+{
+    EasyWeb::WebFile blog(config_.templateDir + "/" + blogPath, false);
+
+    Jinja2CppLight::Template t(config_.template_->file());
+    t.setValue("body", blog.file());
+
+    return t.render();
+}
+
+</code></pre>
+
+<p>Each blog post is stored in a folder structure like: /blog/2019/aBlogPost.html, which will also be the path to access the blog post. The controller handles inserting the blog post into the main template.</p>
+
+                              <h3>Putting it all together, and setting up routing</h3>
+                              <p>I've designed the controllers so that they are not dependent on the http-server I intend to use. This will make it easier to replace the http server if desired. The routes could have been defined inside the controller classes, however, I've decided to define the routes in a separate implementation class. I've used the SimpleWebServer, which has satisfactory features. However, I prefer to switch between HTTP and HTTPS for local testing / production running. Unfortunately, this was a bit more inconvenient with this library. I had to create a template class to handle this. Some other http server library may handle this a bit better.</p>
+
+                              <p>The SimpleWebServer included an example demonstrating loading of files from the server. I included this in my implementation, as it is required to load the necessary css and js files that the html pages refer to. I put this in a separate function for default setup.</p>
+
+<p>The first part of the implementation is to launch either an HTTP server or HTTPS server based on the config settings:</p>
+
+<pre><code align="left">
+
+#include &lt;Config.h&gt;
+#include &lt;HttpUtility.h&gt;
+#include &lt;server_http.hpp&gt;
+#include &lt;server_https.hpp&gt;
+#include &lt;iostream&gt;
+
+namespace Angelsen
+{
+    template&lt;typename SocketType&gt;
+    struct ServerImplementation
+    {
+        void run(const Config& config, SimpleWeb::Server&lt;SocketType&gt;& server);
+        void defineDefaults(const Config& config, SimpleWeb::Server&lt;SocketType&gt;& server);
+    };
+
+    void runServer(const Config& config);
+}
+
+
+void Angelsen::runServer(const Config& config)
+{
+    using SimpleWeb::Server;
+    using SimpleWeb::HTTP;
+    using SimpleWeb::HTTPS;
+
+    if (config.https)
+    {
+        Server&lt;HTTPS&gt; server(config.crt, config.key);
+        server.config.port = config.port;
+
+        std::cout << "Serving as HTTPS server on port: " << config.port << "\n";
+
+        Angelsen::ServerImplementation&lt;HTTPS&gt; angelsen;
+        angelsen.run(config, server);
+    }
+    else
+    {
+        Server&lt;HTTP&gt; server;
+        server.config.port = config.port;
+
+        std::cout << "Serving as HTTP server on port: " << config.port << "\n";
+
+        Angelsen::ServerImplementation&lt;HTTP&gt; angelsen;
+        angelsen.run(config, server);
+    }
+}
+
+#include &lt;ServerImplementation.tpp&gt;
+
+</code></pre>
+
+<p>The run function includes creating the controllers and their respective routes. The function is not the most scalable, but it could be split into multiple files when expanding with more controllers. However, this was the expected tradeoff by separating the routing from the individual controllers.</p>
+
+<pre><code class="cpp" align="left">
+
+// ServerImplementation.tpp
+
+template&lt;typename SocketType&gt;
+void ServerImplementation&lt;SocketType&gt;::run(const Config& config, SimpleWeb::Server&lt;SocketType&gt;& server)
+{
+    defineDefaults(config, server);
+
+    using ResponsePtr = std::shared_ptr&lt;SimpleWeb::Server&lt;SocketType&gt;::Response&gt;;
+    using RequestPtr = std::shared_ptr&lt;SimpleWeb::Server&lt;SocketType&gt;::Request&gt;;
+
+    // Define controllers
+
+    ControllerIndex    controllerIndex(config);
+    ControllerBlogPost controllerBlogPost(config);
+    ControllerContact  controllerContact(config);
+
+    // Define routes
+
+    server.resource["^/$"]["GET"] = [&controllerIndex](ResponsePtr response, RequestPtr) {
+        response->write(controllerIndex.get());
+    };
+
+    server.resource["^/blog/(.*)/(.*html)$"]["GET"] = [&controllerBlogPost](ResponsePtr response, RequestPtr request) {
+        response->write(controllerBlogPost.get(request->path));
+    };
+
+    server.resource["^/contact$"]["GET"] = [&controllerContact](ResponsePtr response, RequestPtr request) {
+        json form = EasyWeb::HttpUtility::requestQueryToJson(request->parse_query_string());
+
+        response->write(controllerContact.get({form["cf-name"].get<std::string>(),
+                                               form["cf-email"].get<std::string>(),
+                                               form["cf-number"].get<std::string>(),
+                                               form["cf-subject"].get<std::string>(),
+                                               form["cf-message"].get<std::string>()}));
+    };
+
+    auto thread = std::thread([&server]()
+    {
+        std::cout << "Server started\n";
+        server.start();
+    });
+
+    thread.join();
+}
+
+</code></pre>
+
+                               <p>Even though it may look a bit verbose, it's actually quite simple. Basically, define the controllers, setup their routes, and start the server. Note that the Simple-Web-Server uses regex to match paths of incoming requests, which is convenient.</p>
+
+                               <h3>Running and testing</h3>
+                               <p>The server is now working, and it is possible to edit html files (such as this blog post) without recompiling. Using cmake to build the server, it can then be run with the -rootDir input parameter</p>
+
+<pre><code align="left">
+
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+$ ./AngelsenSoftwareSystems/AngelsenSoftwareSystems -rootDir /home/stian/EasyWeb/AngelsenSoftwareSystems/
+
+</code></pre>
+
+                              <p>The server is now serving at http://localhost:8080 </p>
+
+                              <h3>Summary</h3>
+                              <p>This was an example of how to design a website using C++ for logic. Personally, I prefer programming simple websites in C++ now, even though I am familiar with e.g. the Angular Typescript framework. </p>
+                              <p>If you want to experiement, please try the GitHub example. <b>It is dependency free</b>, meaning: git clone, compile, run!</p>
+
+                              <p>For a later blog post, I will sho how to deploy the website, and I may also expand the blog feature by using databases.</p>
+
+                              <p>Thank you for reading! - Stian</p>
+
+                              <div class="blog-social-share">
+                                   <h4>Share this article</h4>
+                                   <a href="https://www.facebook.com/templatemo" class="btn btn-primary"><i class="fa fa-facebook"></i>facebook</a>
+                                   <a href="#" class="btn btn-success"><i class="fa fa-twitter"></i>twitter</a>
+                                   <a href="#" class="btn btn-danger"><i class="fa fa-google-plus"></i>google plus</a>
+                              </div>
+                         </div>
+                    </div>
+
+               </div>
+          </div>
+     </section>
