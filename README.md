@@ -23,5 +23,5 @@ The project is using HTTPS, so the OpenSSL libraries are required.
 4. cd build
 5. cmake ..
 6. make
-7. ./Angelsen/Angelsen -rootDir ../Angelsen/config.json
+7. ./Angelsen/Angelsen -config ../Angelsen/config.json
 
