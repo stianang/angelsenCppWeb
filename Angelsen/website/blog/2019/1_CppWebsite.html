@@ -5,7 +5,7 @@
                <div class="row">
 
                     <div class="col-md-offset-1 col-md-5 col-sm-12">
-                         <h2>What does it take to create a website using C++?</h2>
+                         <h2>A basic C++ website - a complete example</h2>
                     </div>
 
                </div>
@@ -28,16 +28,17 @@
 
 int main(int argc, char ** argv)
 {
-   InputParser parser(argc, argv);
-   std::string rootDir = parser.getCmdOption("-rootDir");
+    InputParser parser(argc, argv);
 
-   Angelsen::Config config;
-   config.updateFromJson(rootDir + "/config.json");
-   config.loadTemplate();
+    Angelsen::Config config;
+    config.updateFromJson(parser.getCmdOption("-config"));
+    config.loadTemplate();
 
-   Angelsen::runServer(config);
+    Angelsen::runServer(config);
 }
+
                               </code></pre>
+                              <p><a href="https://github.com/stianang/angelsenCppWeb">https://github.com/stianang/angelsenCppWeb</a></p>
                               </div>
                               <h2>A basic C++ website - a complete example</h2>
                               <p>Many C++ developers would like to stick with what they know to create a basic website, without spending time to learn the latest trending javascript framework. Let's take a look at what it takes!</p>
@@ -52,8 +53,9 @@ int main(int argc, char ** argv)
 
                             <p>C++ is not suitable if you want the latest in responsive design, which relies on javascript. However, please note that it is possible to get a very dynamic feel using CSS only.</p>
 
-                              <p>There are several approaches to creating a website in C++. For this blog post, I will focus on the method I think is the most plug and play. Some C++ web frameworks use widgets and other special classes, but this makes it hard to use predefined HTML/CSS templates (which are beatiful, and widely available on the web).</p>
+                              <p>There are several approaches to creating a website in C++. For this blog post, I will focus on the method I think is the most plug and play. Some C++ web frameworks use widgets, but this makes it hard to use predefined HTML/CSS templates in my opinion (which are beatiful, and widely available on the web). It's easier to use exising html and css, and a template engine to replace variables and insert sub-html components.</p>
 
+                             <p>See the source code for the demo here: <a href="https://github.com/stianang/angelsenCppWeb">https://github.com/stianang/angelsenCppWeb</a></p>
                              <h3>TL;DR</h3>
                              <p>A minimal example:</p>
 
@@ -94,7 +96,7 @@ int main(int argc, char ** argv)
                             <ul>
                                <li><b>HTTP server:</b> <a href="https://gitlab.com/eidheim/Simple-Web-Server">https://gitlab.com/eidheim/Simple-Web-Server</a></li>
                                <li><b>HTML template engine:</b> <a href="https://github.com/hughperkins/Jinja2CppLight">https://github.com/hughperkins/Jinja2CppLight</a></li>
-                               <li><b>Page controllers:</b> This is simple, so I just made some classes myself, adapted to the HTTP server API.</li>
+                               <li><b>Page controllers:</b> We make our own controllers per page.</li>
                             </ul>
 
                             <p>The HTTP server receives the requests, the page controller handles logic and combines one or more html files into the final webpage to send back to the client</p>
@@ -104,11 +106,11 @@ int main(int argc, char ** argv)
                             </div>
 
                             <h3>A consultant homepage</h3>
-                            <p>I will use this very website as an example, as it is running with a C++ backend</p>
+                            <p>I will use my own website as an example (this website), as it is running with a C++ backend</p>
                             <p>My requirement for the site was to have a simple presentation of myself, a contact form, and blog functionality.</p>
                             <p>First I scouted the web by googling 'html/css consultant template'. In the end I found this free template that met my requirements: <a href="https://templatemo.com/tm-509-hydro">https://templatemo.com/tm-509-hydro</a></p>
                             <p>You may say using template is 'cheating', but it is the industry standard when delivering web pages to let the client choose a template/theme, which is then modified. There are so many templates out there, so no need to do this from scratch</p>
-                            <p>Once the template selected, I started designing my mini-framework.</p>
+                            <p>Once the template was selected, I started designing my mini-framework.</p>
 
                             <h3>Tree structure</h3>
                             <p>I split my code into 'common' elements, to be reused with future websites, and the concrete implementation of the consultant page.</p>
@@ -122,7 +124,7 @@ int main(int argc, char ** argv)
                                         <li>+ easyweb <i>(utility classes)</i></li>
                                     </ul>
                                 </li>
-                                <li>- ConsultantPage</li>
+                                <li>- Angelsen</li>
                                 <li>
                                     <ul style="list-style-type: none;">
                                         <li>+ src <i>(main, page controllers)</i></li>
@@ -143,7 +145,7 @@ int main(int argc, char ** argv)
                             <p><b>I did not focus on optimising. If your are a seasoned C++ developer please apply your optimizations were desired</b></p>
 
                             <h3>WebFile class </h3>
-                            <p>For convenience, I created a simple class to load (and reload) html files when they are needed. I used the class as components in the page controllers</p>
+                            <p>For convenience, I created a simple class to load (and reload) html files when they are needed.</p>
 
                             <p>The key feature of the class is simply accessing file content as string, and loading:</p>
 
@@ -589,15 +591,16 @@ void ServerImplementation&lt;SocketType&gt;::run(const Config& config, SimpleWeb
                                <p>Even though it may look a bit verbose, it's actually quite simple. Basically, define the controllers, setup their routes, and start the server. Note that the Simple-Web-Server uses regex to match paths of incoming requests, which is convenient.</p>
 
                                <h3>Running and testing</h3>
-                               <p>The server is now working, and it is possible to edit html files (such as this blog post) without recompiling. Using cmake to build the server, it can then be run with the -rootDir input parameter</p>
+                               <p>The server is now working, and it is possible to edit html files (such as this blog post) without recompiling. Using cmake to build the server, it can then be run with the -config input parameter</p>
 
 <pre><code align="left">
 
+$ cd path/to/project
 $ mkdir build
 $ cd build
 $ cmake ..
 $ make
-$ ./AngelsenSoftwareSystems/AngelsenSoftwareSystems -rootDir /home/stian/EasyWeb/AngelsenSoftwareSystems/
+$ ./Angelsen/Angelsen -config ../Angelsen/config.json
 
 </code></pre>
 
@@ -605,9 +608,11 @@ $ ./AngelsenSoftwareSystems/AngelsenSoftwareSystems -rootDir /home/stian/EasyWeb
 
                               <h3>Summary</h3>
                               <p>This was an example of how to design a website using C++ for logic. Personally, I prefer programming simple websites in C++ now, even though I am familiar with e.g. the Angular Typescript framework. </p>
-                              <p>If you want to experiement, please try the GitHub example. <b>It is dependency free</b>, meaning: git clone, compile, run!</p>
+                              <p>If you want to experiement, please try the GitHub example. <b>It is very easy to get started:</b>git clone, compile, run!</p>
 
-                              <p>For a later blog post, I will sho how to deploy the website, and I may also expand the blog feature by using databases.</p>
+                              <p>Source code here: <a href="https://github.com/stianang/angelsenCppWeb">https://github.com/stianang/angelsenCppWeb</a></p>
+
+                              <p>For a later blog post, I will show how to deploy the website, and I may also expand the blog feature by using databases.</p>
 
                               <p>Thank you for reading! - Stian</p>
 

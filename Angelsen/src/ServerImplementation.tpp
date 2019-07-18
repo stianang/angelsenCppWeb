@@ -111,6 +111,6 @@ void ServerImplementation<SocketType>::defineDefaults(const Config& config, Simp
     server.on_error = [](RequestPtr /*request*/, const SimpleWeb::error_code & /*ec*/) {
         // Handle errors here
         // Note that connection timeouts will also call this handle with ec set to SimpleWeb::errc::operation_canceled
-        std::cout << "Error handling request\n";
+        //std::cout << "Error handling request with path: '" << request->path << "'\n";
     };
 }
