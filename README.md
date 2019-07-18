@@ -11,7 +11,7 @@ The demonstration uses copies of the following libraries (to enable plug-and-pla
 * https://gitlab.com/eidheim/Simple-Web-Server
 * https://github.com/hughperkins/Jinja2CppLight
 
-And a a copy of standalone boost asio.
+And a copy of standalone boost asio.
 
 The project is using HTTPS, so the OpenSSL libraries are required.
 
