@@ -17,7 +17,7 @@ The project is using HTTPS, so the OpenSSL libraries are required.
 
 ## Install and test
 
-1. git clone
+1. git clone https://github.com/stianang/angelsenCppWeb.git
 2. cd into project
 3. mkdir build
 4. cd build
