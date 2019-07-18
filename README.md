@@ -4,7 +4,7 @@ This project is a demonstration of a method to use C++ as logic for websites. My
 The method simply uses the following:
 * An HTTP/HTTPS server
 * An HTML Template Library
-' Simple classes for logic
+* Simple classes for logic
 
 ## Libraries
 The demonstration uses copies of the following libraries (to enable plug-and-play):
@@ -23,5 +23,5 @@ The project is using HTTPS, so the OpenSSL libraries are required.
 4. cd build
 5. cmake ..
 6. make
-7. Run the example
+7. ./Angelsen/Angelsen -rootDir ../Angelsen/config.json
 
