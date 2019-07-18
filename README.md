@@ -1,4 +1,4 @@
-# angelsenCppWeb
+# AngelsenCppWeb - Demo
 ## About
 This project is a demonstration of a method to use C++ as logic for websites. My own personal website is used as the example.
 The method simply uses the following:
