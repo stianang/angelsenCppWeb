@@ -4,10 +4,9 @@
 int main(int argc, char ** argv)
 {
     InputParser parser(argc, argv);
-    std::string rootDir = parser.getCmdOption("-rootDir");
 
     Angelsen::Config config;
-    config.updateFromJson(rootDir + "/config.json");
+    config.updateFromJson(parser.getCmdOption("-config"));
     config.loadTemplate();
 
     Angelsen::runServer(config);

@@ -4,4 +4,4 @@ project(easyweb_root)
 
 # Add sub directories
 add_subdirectory(common)
-add_subdirectory(AngelsenSoftwareSystems)
+add_subdirectory(Angelsen)
