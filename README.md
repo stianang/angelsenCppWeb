@@ -8,6 +8,8 @@ The method simply uses the following:
 
 The page is live here: https://angelsensoftware.com
 
+Blog post describing the project: https://angelsensoftware.com/blog/2019/1_CppWebsite.html
+
 ## Libraries
 The demonstration uses copies of the following libraries (to enable plug-and-play):
 * https://gitlab.com/eidheim/Simple-Web-Server
