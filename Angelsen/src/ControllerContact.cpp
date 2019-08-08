@@ -20,13 +20,13 @@ std::string ControllerContact::get(const FormData &formData)
     {
         confirmation.setValue("headerTitle", "Thank you for your request!");
         confirmation.setValue("title", "Your request has been sent");
-        confirmation.setValue("result", "We will contact you as soon as possible. For urgent request, please contact us on (+47) 90 07 98 93 or on sangelsen@gmail.com" );
+        confirmation.setValue("result", "We will contact you as soon as possible. For urgent request, please contact us on (+47) 90 07 98 93 or on stian@angelsensoftware.com" );
     }
     else
     {
         confirmation.setValue("headerTitle", "Something went wrong");
         confirmation.setValue("title", "We were unable to process your request");
-        confirmation.setValue("result", "Please verify all fields were entered correctly. For urgent request, please contact us on (+47) 90 07 98 93  or on sangelsen@gmail.com");
+        confirmation.setValue("result", "Please verify all fields were entered correctly. For urgent request, please contact us on (+47) 90 07 98 93  or on stian@angelsensoftware.com");
     }
 
     Jinja2CppLight::Template mainTemplate(config_.template_->file());

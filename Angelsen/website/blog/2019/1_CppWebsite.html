@@ -22,7 +22,7 @@
                          <!-- BLOG THUMB -->
                          <div class="blog-detail-thumb">
                               <div class="blog-image">
-                                   <pre><code align="left">
+                                   <pre><code style="text-align: left">
 #include &lt;ServerImplementation.h&gt;
 #include &lt;InputParser.h&gt;
 
@@ -59,7 +59,7 @@ int main(int argc, char ** argv)
                              <h3>TL;DR</h3>
                              <p>A minimal example:</p>
 
-<pre><code align="left">
+<pre><code style="text-align: left">
 // Partly sudo-code, to demonstrate a minimal example
 
 int main(int argc, char ** argv)
@@ -73,7 +73,7 @@ int main(int argc, char ** argv)
         indexPage.setValue("title", "Welcome to website Hello World");
         indexPage.setValue("contactEmail", "my@email.com");
 
-        response->write(indexPage.render); // Return rendered page
+        response->write(indexPage.render()); // Return rendered page
     };
 
     server.start();
@@ -149,7 +149,7 @@ int main(int argc, char ** argv)
 
                             <p>The key feature of the class is simply accessing file content as string, and loading:</p>
 
-                            <pre><code align="left">
+                            <pre><code style="text-align: left">
 std::string& WebFile::file()
 {
     if (file_.empty())
@@ -181,7 +181,7 @@ void WebFile::read()
     }
     else
     {
-        std::cerr << "Failed to open file: " << filePath_ << std::endl;
+        std::cerr &lt;&lt; "Failed to open file: " &lt;&lt; filePath_ &lt;&lt; std::endl;
     }
 }
 </code></pre>
@@ -189,7 +189,7 @@ void WebFile::read()
                             <h3>The basic html template</h3>
                             <p>I modified the downloaded template so that the pages can have the same menu and footer, only replacing the body when loading different pages. Note that variables are inserted using {{variable}} tags.</p>
 
-<pre><code align="left">
+<pre><code style="text-align: left">
 &lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
 &lt;head&gt;
@@ -210,12 +210,12 @@ void WebFile::read()
 &lt;/body&gt;
 &lt;/html&gt;
 
-</pre></code>
+</code></pre>
 
                             <h3>Configuration</h3>
                             <p>It is convenient to load config from a separate file, e.g. a json file. In addition to configuration, I store the main html template in the config class, for easy access from the page controllers. My intention is then to mainly depend on the config class below.</p>
 
-<pre><code align="left">
+<pre><code style="text-align: left">
 
 // Config.h
 
@@ -276,7 +276,7 @@ namespace Angelsen
                             <p>The most basic page is the index page. It is simply a static page placed inside the body of the template</p>
                             <p>I chose to design the controllers as simply as possible. The task of the controllers is to take input and render the output.</p>
 
-<pre><code align="left">
+<pre><code style="text-align: left">
 
 // ControllerIndex.h
 
@@ -323,7 +323,7 @@ std::string Angelsen::ControllerIndex::get()
                                <h3>Contact confirmation controller</h3>
                                <p>I will use the contact form to send myself an email when it is submitted. I use a third party email provider, which can send emails using a simple HTTP request. I will not go into the detail of the implementation, but you may look it up on the GitHub project if curious. The request requires me to send an http-version of the emails text as well as in plaintext format.</p>
 
-<pre><code align="left">
+<pre><code style="text-align: left">
 
 // ControllerContact.h
 
@@ -396,22 +396,22 @@ std::string ControllerContact::get(const FormData &formData)
 bool ControllerContact::sendEmail(const FormData &formData)
 {
     std::stringstream html;
-    html << "&lt;h3&gt;New message from your website!&lt;/h3&gt;\n"
-         << "&lt;p&gt;" << formData.message << "&lt;/p&gt;\n"
-         << "&lt;h3&gt;Info&lt;/h3&gt;\n"
-         << "&lt;p&gt;Name:    " << formData.name << "&lt;/p&gt;\n"
-         << "&lt;p&gt;Email:   " << formData.email << "&lt;/p&gt;\n"
-         << "&lt;p&gt;Number:  " << formData.number << "&lt;/p&gt;\n"
-         << "&lt;p&gt;Subject: " << formData.subject << "&lt;/p&gt;\n";
+    html &lt;&lt; "&lt;h3&gt;New message from your website!&lt;/h3&gt;\n"
+         &lt;&lt; "&lt;p&gt;" &lt;&lt; formData.message &lt;&lt; "&lt;/p&gt;\n"
+         &lt;&lt; "&lt;h3&gt;Info&lt;/h3&gt;\n"
+         &lt;&lt; "&lt;p&gt;Name:    " &lt;&lt; formData.name &lt;&lt; "&lt;/p&gt;\n"
+         &lt;&lt; "&lt;p&gt;Email:   " &lt;&lt; formData.email &lt;&lt; "&lt;/p&gt;\n"
+         &lt;&lt; "&lt;p&gt;Number:  " &lt;&lt; formData.number &lt;&lt; "&lt;/p&gt;\n"
+         &lt;&lt; "&lt;p&gt;Subject: " &lt;&lt; formData.subject &lt;&lt; "&lt;/p&gt;\n";
 
     std::stringstream plain;
-    plain << "New message from your website!\n\n"
-          << formData.message << "\n\n"
-          << "Info\n"
-          << "Name:    " << formData.name << "\n"
-          << "Email:   " << formData.email << "\n"
-          << "Number:  " << formData.number << "\n"
-          << "Subject: " << formData.subject << "\n";
+    plain &lt;&lt; "New message from your website!\n\n"
+          &lt;&lt; formData.message &lt;&lt; "\n\n"
+          &lt;&lt; "Info\n"
+          &lt;&lt; "Name:    " &lt;&lt; formData.name &lt;&lt; "\n"
+          &lt;&lt; "Email:   " &lt;&lt; formData.email &lt;&lt; "\n"
+          &lt;&lt; "Number:  " &lt;&lt; formData.number &lt;&lt; "\n"
+          &lt;&lt; "Subject: " &lt;&lt; formData.subject &lt;&lt; "\n";
 
     auto email = EmailClientSendInBlue(config_.email.url,
                                        config_.email.apiKey)
@@ -431,7 +431,7 @@ bool ControllerContact::sendEmail(const FormData &formData)
                              <h3>Blog detail controller</h3>
                              <p>The controller shall be responsible to show any blog post, by using a blog-id as input. There are many oppertunities to expand the controller, such as storing the blog posts in a database. For now, I'll keep it simple, and just upload a new html file for every new blog post. Then I would manually have to update the index page to feature the latest blog posts. Expansion of this system is a good candiate for the next blog post.</p>
 
-<pre><code align="left">
+<pre><code style="text-align: left">
 
 // ControllerBlogPost.h
 
@@ -484,7 +484,7 @@ std::string ControllerBlogPost::get(const std::string& blogPath)
 
 <p>The first part of the implementation is to launch either an HTTP server or HTTPS server based on the config settings:</p>
 
-<pre><code align="left">
+<pre><code style="text-align: left">
 
 #include &lt;Config.h&gt;
 #include &lt;HttpUtility.h&gt;
@@ -516,7 +516,7 @@ void Angelsen::runServer(const Config& config)
         Server&lt;HTTPS&gt; server(config.crt, config.key);
         server.config.port = config.port;
 
-        std::cout << "Serving as HTTPS server on port: " << config.port << "\n";
+        std::cout &lt;&lt; "Serving as HTTPS server on port: " &lt;&lt; config.port &lt;&lt; "\n";
 
         Angelsen::ServerImplementation&lt;HTTPS&gt; angelsen;
         angelsen.run(config, server);
@@ -526,7 +526,7 @@ void Angelsen::runServer(const Config& config)
         Server&lt;HTTP&gt; server;
         server.config.port = config.port;
 
-        std::cout << "Serving as HTTP server on port: " << config.port << "\n";
+        std::cout &lt;&lt; "Serving as HTTP server on port: " &lt;&lt; config.port &lt;&lt; "\n";
 
         Angelsen::ServerImplementation&lt;HTTP&gt; angelsen;
         angelsen.run(config, server);
@@ -539,7 +539,7 @@ void Angelsen::runServer(const Config& config)
 
 <p>The run function includes creating the controllers and their respective routes. The function is not the most scalable, but it could be split into multiple files when expanding with more controllers. However, this was the expected tradeoff by separating the routing from the individual controllers.</p>
 
-<pre><code class="cpp" align="left">
+<pre><code class="cpp" style="text-align: left">
 
 // ServerImplementation.tpp
 
@@ -570,16 +570,16 @@ void ServerImplementation&lt;SocketType&gt;::run(const Config& config, SimpleWeb
     server.resource["^/contact$"]["GET"] = [&controllerContact](ResponsePtr response, RequestPtr request) {
         json form = EasyWeb::HttpUtility::requestQueryToJson(request->parse_query_string());
 
-        response->write(controllerContact.get({form["cf-name"].get<std::string>(),
-                                               form["cf-email"].get<std::string>(),
-                                               form["cf-number"].get<std::string>(),
-                                               form["cf-subject"].get<std::string>(),
-                                               form["cf-message"].get<std::string>()}));
+        response->write(controllerContact.get({form["cf-name"].get&lt;std::string&gt;(),
+                                               form["cf-email"].get&lt;std::string&gt;(),
+                                               form["cf-number"].get&lt;std::string&gt;),
+                                               form["cf-subject"].get&lt;std::string&gt;(),
+                                               form["cf-message"].get&lt;std::string&gt;()}));
     };
 
     auto thread = std::thread([&server]()
     {
-        std::cout << "Server started\n";
+        std::cout &lt;&lt; "Server started\n";
         server.start();
     });
 
@@ -593,7 +593,7 @@ void ServerImplementation&lt;SocketType&gt;::run(const Config& config, SimpleWeb
                                <h3>Running and testing</h3>
                                <p>The server is now working, and it is possible to edit html files (such as this blog post) without recompiling. Using cmake to build the server, it can then be run with the -config input parameter</p>
 
-<pre><code align="left">
+<pre><code style="text-align: left">
 
 $ cd path/to/project
 $ mkdir build
@@ -616,12 +616,6 @@ $ ./Angelsen/Angelsen -config ../Angelsen/config.json
 
                               <p>Thank you for reading! - Stian</p>
 
-                              <div class="blog-social-share">
-                                   <h4>Share this article</h4>
-                                   <a href="https://www.facebook.com/templatemo" class="btn btn-primary"><i class="fa fa-facebook"></i>facebook</a>
-                                   <a href="#" class="btn btn-success"><i class="fa fa-twitter"></i>twitter</a>
-                                   <a href="#" class="btn btn-danger"><i class="fa fa-google-plus"></i>google plus</a>
-                              </div>
                          </div>
                     </div>
 

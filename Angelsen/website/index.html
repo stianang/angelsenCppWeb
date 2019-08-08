@@ -13,14 +13,13 @@
                     </div>
 
                     <div class="col-md-6 col-sm-12">
-                         <div>
-                         <pre><code align="left">
-    struct ContactInfo
-    {
-      std::string name     { "Stian Angelsen" };
-      std::string phone    { "(+47) 90 07 98 93" };
-      std::string email    { "sangelsen@gmail.com" };
-      std::string location { "Drammen, Norway" };
+                         <div style="text-align: left">
+                         <pre><code class="cpp">
+    ContactInfo info {
+        "Stian Angelsen",
+        "(+47) 90 07 98 93",
+        "sangelsen@gmail.com",
+        "Drammen, Norway"
     };
                          </code></pre>
                          </div>
@@ -44,7 +43,7 @@
                               </div>
                               <p>Hi! My name is Stian Angelsen and I work as a consultant/freelancer. With a strong passion for C++ and software development, I focus on delivering high quality, maintainable, and on-time services.</p>
                               <p>I am located in Drammen, Norway, and can do long-term on-site work in eastern Norway, or global work remotely.</p>
-                              <p>Read more about my background on my <a href="https://www.linkedin.com/in/stian-angelsen-a9604657/">LinkedIn profile</a>.</p>
+                              <p>Read more about my background on my <a href="https://www.linkedin.com/in/stian-angelsen-a9604657/">LinkedIn CV</a>.</p>
                         </div>
                     </div>
 
@@ -164,7 +163,7 @@
                                         <small>C++ solutions</small>
                                    </div>
                               </a>
-                              <p>Advanced C++ desktop solutions and processing</p>
+                              <p>Advanced C++ solutions</p>
                          </div>
                     </div>
 
@@ -179,7 +178,7 @@
                                         <small>C++, QML apps</small>
                                    </div>
                               </a>
-                              <p>iPhone/Android apps with or without C++ backends</p>
+                              <p>iPhone/Android apps, QML and C++</p>
                          </div>
                     </div>
 
@@ -194,7 +193,7 @@
                                         <small>REST Servers</small>
                                    </div>
                               </a>
-                              <p>C++ web backends for high performance</p>
+                              <p>C++ web backends</p>
                          </div>
                     </div>
 
@@ -229,14 +228,14 @@
                          </div>
                          <div class="about-info" style="margin-bottom: 20px">
                             <p style="color: #ffffff">If you are in need of a C++ developer, I am interested to hear from you!</p>
-                            <p style="color: #ffffff">Contact me directly at <b>sangelsen@gmail.com</b> or <b>(+47) 90 07 98 93</b>, or fill in the form below.</p>
+                            <p style="color: #ffffff">Contact me directly at <b>stian@angelsensoftware.com</b>, mobile <b>(+47) 90 07 98 93</b>, <a href="https://www.linkedin.com/in/stian-angelsen-a9604657/">LinkedIn</a>, or fill in the form below.</p>
                          </div>
                     </div>
 
                     <div class="col-md-8 col-sm-8">
                         
                          <!-- CONTACT FORM HERE -->
-                         <form id="contact-form" role="form" action="http://localhost:8080/contact" method="get">
+                         <form id="contact-form" role="form" action="/contact" method="get">
                               <div class="col-md-6 col-sm-6">
                                    <input type="text" class="form-control" placeholder="Full Name" id="cf-name" name="cf-name" required="">
                               </div>
