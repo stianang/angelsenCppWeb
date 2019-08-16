@@ -3,6 +3,7 @@
 
 #include <WebFile.h>
 #include <Config.h>
+#include <ControllerBlogFeature.h>
 
 namespace Angelsen
 {
@@ -13,6 +14,7 @@ namespace Angelsen
         std::string get();
 
         const Config& config_;
+        ControllerBlogFeature controllerBlogFeature_;
         EasyWeb::WebFile index_;
     };
 }

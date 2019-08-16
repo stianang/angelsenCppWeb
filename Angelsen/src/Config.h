@@ -10,21 +10,22 @@ namespace Angelsen
 {
     struct Config
     {
-        std::string rootDir{};
-        std::string templateDir{};
+        std::string rootDir;
+        std::string templateDir;
 
         unsigned short port {8080};
 
         bool https {false};
-        std::string crt{};
-        std::string key{};
+        std::string crt;
+        std::string key;
+        bool reload{false};
 
         struct SendInBlue
         {
-            std::string url{};
-            std::string apiKey{};
-            std::string toEmail{};
-            std::string toName{};
+            std::string url;
+            std::string apiKey;
+            std::string toEmail;
+            std::string toName;
         } email;
 
         std::unique_ptr<EasyWeb::WebFile> template_;

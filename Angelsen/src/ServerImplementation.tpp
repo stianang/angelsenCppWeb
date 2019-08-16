@@ -9,6 +9,8 @@
 #include <ControllerIndex.h>
 #include <ControllerBlogPost.h>
 #include <ControllerContact.h>
+#include <ControllerBlogFeature.h>
+#include <ControllerBlogList.h>
 
 using namespace Angelsen;
 
@@ -20,9 +22,10 @@ void ServerImplementation<SocketType>::run(const Config& config, SimpleWeb::Serv
     using ResponsePtr = std::shared_ptr<typename SimpleWeb::Server<SocketType>::Response>;
     using RequestPtr = std::shared_ptr<typename SimpleWeb::Server<SocketType>::Request>;
 
-    ControllerIndex controllerIndex(config);
+    ControllerIndex    controllerIndex(config);
     ControllerBlogPost controllerBlogPost(config);
-    ControllerContact controllerContact(config);
+    ControllerBlogList controllerBlogList(config);
+    ControllerContact  controllerContact(config);
 
     server.resource["^/$"]["GET"] = [&controllerIndex](ResponsePtr response, RequestPtr) {
         response->write(controllerIndex.get());
@@ -30,6 +33,10 @@ void ServerImplementation<SocketType>::run(const Config& config, SimpleWeb::Serv
 
     server.resource["^/blog/(.*)/(.*html)$"]["GET"] = [&controllerBlogPost](ResponsePtr response, RequestPtr request) {
         response->write(controllerBlogPost.get(request->path));
+    };
+
+    server.resource["^/bloglist$"]["GET"] = [&controllerBlogList](ResponsePtr response, RequestPtr) {
+        response->write(controllerBlogList.get());
     };
 
     server.resource["^/contact$"]["GET"] = [&controllerContact](ResponsePtr response, RequestPtr request) {

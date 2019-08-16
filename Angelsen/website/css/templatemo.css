@@ -13,6 +13,21 @@ http://www.templatemo.com/tm-509-hydro
     overflow-x: hidden;
   }
 
+/*---------------------------------------
+   CUSTOM - ANGELSEN
+-----------------------------------------*/
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background: #ffffff;
+    }
+
+    td, th {
+      border: 0px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
 
   /*---------------------------------------
      TYPOGRAPHY              
@@ -78,11 +93,19 @@ http://www.templatemo.com/tm-509-hydro
   }
 
   a {
-    color: #252525;
+    color: #0000EE;
     font-weight: normal;
     -webkit-transition: 0.5s;
     transition: 0.5s;
     text-decoration: none !important;
+  }
+
+  .feature a {
+      color: #252525;
+      font-weight: normal;
+      -webkit-transition: 0.5s;
+      transition: 0.5s;
+      text-decoration: none !important;
   }
 
   a:hover, a:active, a:focus {
@@ -511,6 +534,23 @@ http://www.templatemo.com/tm-509-hydro
     position: relative;
     padding-top: 12em;
   }
+
+    #blog-header-mini {
+      background: url('../images/blog-header-bg.jpg') no-repeat center center;
+      background-size: cover;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+      height: 5vh;
+      color: #ffffff;
+      position: relative;
+      padding-top: 3em;
+    }
 
   #blog-header h2 {
     color: #ffffff;

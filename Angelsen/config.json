@@ -5,6 +5,7 @@
     "https": false,
     "crt" : "server.crt",
     "key" : "server.key",
+    "reload" : false,
     "email" : {
         "url" : "api.sendinblue.com",
         "apiKey" : "SECRET",

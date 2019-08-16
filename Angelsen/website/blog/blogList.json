@@ -1,0 +1,18 @@
+[
+    {
+        "date" : "July 29, 2019",
+        "title" : "Creating a website using C++",
+        "description" : "A demonstration of using C++ for website logic. It might be easier than you think",
+        "a_href" : "blog/2019/1_CppWebsite.html",
+        "img_src" : "blog/2019/images/blog-image1.jpg",
+        "feature" : true
+    },
+    {
+        "date" : "July 12, 2019",
+        "title" : "Welcome to my website",
+        "description" : "Welcome to my website and blog! Who am I, and what will this website be about?",
+        "a_href" : "blog/2019/2_Presentation.html",
+        "img_src" : "images/blog-image4.jpg",
+        "feature" : true
+    }
+]

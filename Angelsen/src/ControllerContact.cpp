@@ -7,7 +7,7 @@ using namespace Angelsen;
 
 ControllerContact::ControllerContact(const Config &config)
     : config_(config),
-      confirmation_(config.templateDir + "/contact_confirmation.html", true)
+      confirmation_(config.templateDir + "/contact_confirmation.html", config.reload)
 {
 
 }

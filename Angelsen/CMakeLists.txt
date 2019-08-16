@@ -11,6 +11,8 @@ add_executable(${PROJECT_NAME}
     src/ControllerIndex.cpp
     src/ControllerContact.cpp
     src/ControllerBlogPost.cpp
+    src/ControllerBlogFeature.cpp
+    src/ControllerBlogList.cpp
     src/Config.cpp
     )
 
