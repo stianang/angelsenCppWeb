@@ -22,9 +22,9 @@ target_link_libraries(simple-web-server INTERFACE ${CMAKE_THREAD_LIBS_INIT})
 # Remove Boost system, thread, regex components; use Boost::<component> aliases; remove Boost target_include_directories
 if(USE_STANDALONE_ASIO)
     target_compile_definitions(simple-web-server INTERFACE USE_STANDALONE_ASIO)
-    find_file(HAVE_ASIO asio.hpp PATHS /home/stian/EasyWeb/common/http/asio-1.12.2/include)
+    find_file(HAVE_ASIO asio.hpp PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../asio-1.12.2/include)
     target_include_directories(simple-web-server
-        INTERFACE /home/stian/EasyWeb/common/http/asio-1.12.2/include)
+            INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../asio-1.12.2/include)
     if(NOT HAVE_ASIO)
         message(FATAL_ERROR "Standalone Asio not found")
     endif()
