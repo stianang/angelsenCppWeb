@@ -6,12 +6,6 @@ The method simply uses the following:
 * An HTML Template Library
 * Simple classes for logic
 
-The page is live here: https://angelsensoftware.com
-
-Blog post describing the project: https://angelsensoftware.com/blog/2019/1_CppWebsite.html
-
-Check out my blog at https://blog.angelsensoftware.com
-
 ## Libraries
 The demonstration uses copies of the following libraries (to enable plug-and-play):
 * https://gitlab.com/eidheim/Simple-Web-Server
